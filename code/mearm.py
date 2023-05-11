@@ -3,24 +3,28 @@ import sys
 del sys.modules["mearm"]
 from mearm import Arm
 # tests
-Arm.grip.move(120)
-Arm.grip.reset()
-Arm.base.move(120)
-Arm.base.reset()
-Arm.left.move(120)
-Arm.left.reset()
-Arm.right.move(120)
-Arm.right.reset()
+import uasyncio
+tasks = [
+    Arm.grip.move(120),
+    Arm.base.move(120),
+    Arm.left.move(120),
+    Arm.right.move(120),
+]
+uasyncio.run(uasyncio.gather(tasks))
+# or
+
+uasyncio.run(Arm.move_together(base_angle=120, left_angle=120, right_angle=120, grip_angle=120))
 """
+
 import machine
-import utime
+import uasyncio
 
 PWM_MIN = 1000
 PWM_MAX = 9000
 PWM_RANGE = PWM_MAX - PWM_MIN
 PWM_FREQ = 50
 
-class Servo:
+class AsyncServo:
     def __init__(self, pin, reset_position=90, min_position=0, max_position=180):
         self.pwm = machine.PWM(machine.Pin(pin, machine.Pin.OUT))
         self.pwm.freq(PWM_FREQ)
@@ -34,20 +38,32 @@ class Servo:
     def set_angle(self, angle):
         self.pwm.duty_u16(self.degrees_to_duty(angle))
 
-    def move(self, position, seconds=1, steps=100):
+    async def move(self, position, seconds=1, steps=100):
         step_time = seconds/steps
         position = max(self.min_position, min(self.max_position, position))
         step_size = (position - self.current) / steps
         for n in range(steps):
-            utime.sleep(step_time)
+            await uasyncio.sleep(step_time)
             self.set_angle(self.current)
             self.current += step_size
 
-    def reset(self, seconds=1, steps=100):
-        self.move(self.reset_position, seconds=seconds, steps=steps)
+    async def reset(self, seconds=1, steps=100):
+        await self.move(self.reset_position, seconds=seconds, steps=steps)
 
 class Arm:
-    grip_servo = Servo(4, reset_position=100, min_position=100, max_position=157)
-    left_servo = Servo(5, min_position=30, max_position=120)
-    right_servo = Servo(6, min_position=50, max_position=150)
-    base_servo = Servo(7, min_position=30, max_position=150)
+    grip_servo = AsyncServo(4, reset_position=100, min_position=100, max_position=157)
+    left_servo = AsyncServo(5, min_position=30, max_position=120)
+    right_servo = AsyncServo(6, min_position=50, max_position=150)
+    base_servo = AsyncServo(7, min_position=30, max_position=150)
+
+    async def move_together(base_angle=None, left_angle=None, right_angle=None, grip_angle=None, seconds=1, steps=100):
+        tasks = []
+        if base_angle is not None:
+            tasks.append(Arm.base_servo.move(base_angle, seconds=seconds, steps=steps))
+        if left_angle is not None:
+            tasks.append(Arm.left_servo.move(left_angle, seconds=seconds, steps=steps))
+        if right_angle is not None:
+            tasks.append(Arm.right_servo.move(right_angle, seconds=seconds, steps=steps))
+        if grip_angle is not None:
+            tasks.append(Arm.grip_servo.move(grip_angle, seconds=seconds, steps=steps))
+        return uasyncio.gather(tasks)
