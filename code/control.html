@@ -7,6 +7,10 @@
         $("#open").click(() => $.get("/open"));
         let base_element=$('#base');
         base_element.change(() => $.get('/set_base/' + base_element.prop('value') ));
+        let shoulder_element=$('#shoulder');
+        shoulder_element.change(() => $.get('/set_shoulder/' + shoulder_element.prop('value') ));
+        let elbow_element=$('#elbow');
+        elbow_element.change(() => $.get('/set_elbow/' + elbow_element.prop('value') ));
     });
     </script>
 </head>
@@ -17,10 +21,10 @@
         <input type="range" min="20" max="180" value="90" class="slider" id="base">
     </div>
     <div class="slidecontainer">
-        <input type="range" min="20" max="180" value="90" class="slider" id="left">
+        <input type="range" min="20" max="180" value="90" class="slider" id="shoulder">
     </div>
     <div class="slidecontainer">
-        <input type="range" min="20" max="180" value="90" class="slider" id="right">
+        <input type="range" min="20" max="180" value="90" class="slider" id="elbow">
     </div>
 </body>
 </html>
