@@ -13,7 +13,7 @@ tasks = [
 uasyncio.run(uasyncio.gather(tasks))
 # or
 
-uasyncio.run(Arm.move_together(base_angle=120, left_angle=120, right_angle=120, grip_angle=120))
+uasyncio.run(Arm.move_together(base_angle=120, shoulder_angle=120, elbow_angle=120, grip_angle=120))
 """
 
 import machine
