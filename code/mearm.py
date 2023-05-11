@@ -7,10 +7,10 @@ Arm.grip.move(120)
 Arm.grip.reset()
 Arm.base.move(120)
 Arm.base.reset()
-Arm.left.move(120)
-Arm.left.reset()
-Arm.right.move(120)
-Arm.right.reset()
+Arm.shoulder.move(120)
+Arm.shoulder.reset()
+Arm.elbow.move(120)
+Arm.elbow.reset()
 """
 import machine
 import utime
@@ -47,7 +47,7 @@ class Servo:
         self.move(self.reset_position, seconds=seconds, steps=steps)
 
 class Arm:
-    grip_servo = Servo(4, reset_position=100, min_position=100, max_position=157)
-    left_servo = Servo(5, min_position=30, max_position=120)
-    right_servo = Servo(6, min_position=50, max_position=150)
-    base_servo = Servo(7, min_position=30, max_position=150)
+    grip = Servo(4, reset_position=100, min_position=100, max_position=157)
+    elbow = Servo(5, min_position=30, max_position=120)
+    shoulder = Servo(6, min_position=50, max_position=150)
+    base = Servo(7, min_position=30, max_position=150)
