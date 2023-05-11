@@ -20,6 +20,7 @@ uasyncio.run(Arm.reset())
 
 import machine
 import uasyncio
+import math
 
 PWM_MIN = 1000
 PWM_MAX = 9000
@@ -72,3 +73,15 @@ class Arm:
 
     async def reset(seconds=1, steps=100):
         await Arm.move_together(base_angle=90, shoulder_angle=90, elbow_angle=90, grip_angle=100, seconds=seconds, steps=steps)
+
+    async def move_to(self, x, y, z, seconds=1, steps=100):
+        segment_length=80
+        base_angle = math.degrees(math.atan2(y, x))
+        l_sq = x * x + y * y
+        h = math.sqrt(l_sq + z * z)
+        phi = math.degrees(math.atan(z/math.sqrt(l_sq)))
+        theta = math.degrees(math.atan(h / (2 * segment_length)))
+        shoulder_angle = phi + theta
+        elbow_angle = phi - theta
+
+        await self.move_together(base_angle=base_angle, shoulder_angle=shoulder_angle, elbow_angle=elbow_angle, seconds=seconds, steps=steps)

@@ -36,6 +36,11 @@ async def _set_elbow(request, position):
     uasyncio.create_task(Arm.elbow.move(position))
     return 'Moving'
 
+@app.route('/move_to/<int:x>/<int:y>/<int:z>')
+async def _move_to(request, x, y, z):
+    uasyncio.create_task(Arm.move_to(x, y, z))
+    return 'Moving'
+
 try:
     wifi_connect()
     print("Starting app")
