@@ -13,27 +13,27 @@ async def index(request):
 
 @app.route('/open')
 async def _open(request):
-    uasyncio.create_task(Arm.grip_servo.move(Arm.grip_servo.min_position))
+    uasyncio.create_task(Arm.grip.move(Arm.grip.min_position))
     return 'Opening'
     
 @app.route('/close')
 async def _close(request):
-    uasyncio.create_task(Arm.grip_servo.move(Arm.grip_servo.max_position))
+    uasyncio.create_task(Arm.grip.move(Arm.grip.max_position))
     return 'Closing'
 
 @app.route('/set_base/<int:position>')
 async def _set_base(request, position):
-    uasyncio.create_task(Arm.base_servo.move(position))
+    uasyncio.create_task(Arm.base.move(position))
     return 'Moving'
 
 @app.route('/set_shoulder/<int:position>')
 async def _set_shoulder(request, position):
-    uasyncio.create_task(Arm.shoulder_servo.move(position))
+    uasyncio.create_task(Arm.shoulder.move(position))
     return 'Moving'
 
 @app.route('/set_elbow/<int:position>')
 async def _set_elbow(request, position):
-    uasyncio.create_task(Arm.elbow_servo.move(position))
+    uasyncio.create_task(Arm.elbow.move(position))
     return 'Moving'
 
 try:
