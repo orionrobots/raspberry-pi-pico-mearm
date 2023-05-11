@@ -15,7 +15,7 @@ uasyncio.run(uasyncio.gather(*tasks))
 # or
 
 uasyncio.run(Arm.move_together(base_angle=120, shoulder_angle=120, elbow_angle=120, grip_angle=120))
-uasyncio.run(Arm.move_together(base_angle=90, shoulder_angle=90, elbow_angle=90, grip_angle=100))
+uasyncio.run(Arm.reset())
 """
 
 import machine
@@ -69,3 +69,6 @@ class Arm:
         if grip_angle is not None:
             tasks.append(uasyncio.create_task(Arm.grip.move(grip_angle, seconds=seconds, steps=steps)))
         await uasyncio.gather(*tasks)
+
+    async def reset(seconds=1, steps=100):
+        await Arm.move_together(base_angle=90, shoulder_angle=90, elbow_angle=90, grip_angle=100, seconds=seconds, steps=steps)
