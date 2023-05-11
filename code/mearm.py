@@ -4,16 +4,18 @@ del sys.modules["mearm"]
 from mearm import Arm
 # tests
 import uasyncio
+
 tasks = [
-    Arm.grip.move(120),
-    Arm.base.move(120),
-    Arm.shoulder.move(120),
-    Arm.elbow.move(120),
+    uasyncio.create_task(Arm.grip.move(120)),
+    uasyncio.create_task(Arm.base.move(120)),
+    uasyncio.create_task(Arm.shoulder.move(120)),
+    uasyncio.create_task(Arm.elbow.move(120)),
 ]
-uasyncio.run(uasyncio.gather(tasks))
+uasyncio.run(uasyncio.gather(*tasks))
 # or
 
 uasyncio.run(Arm.move_together(base_angle=120, shoulder_angle=120, elbow_angle=120, grip_angle=120))
+uasyncio.run(Arm.move_together(base_angle=90, shoulder_angle=90, elbow_angle=90, grip_angle=100))
 """
 
 import machine
@@ -52,18 +54,18 @@ class AsyncServo:
 
 class Arm:
     grip = AsyncServo(4, reset_position=100, min_position=100, max_position=157)
-    left = AsyncServo(5, min_position=30, max_position=120)
-    right = AsyncServo(6, min_position=50, max_position=150)
+    shoulder = AsyncServo(5, min_position=30, max_position=120)
+    elbow = AsyncServo(6, min_position=50, max_position=150)
     base = AsyncServo(7, min_position=30, max_position=150)
 
     async def move_together(base_angle=None, shoulder_angle=None, elbow_angle=None, grip_angle=None, seconds=1, steps=100):
         tasks = []
         if base_angle is not None:
-            tasks.append(Arm.base.move(base_angle, seconds=seconds, steps=steps))
+            tasks.append(uasyncio.create_task(Arm.base.move(base_angle, seconds=seconds, steps=steps)))
         if shoulder_angle is not None:
-            tasks.append(Arm.shoulder.move(shoulder_angle, seconds=seconds, steps=steps))
+            tasks.append(uasyncio.create_task(Arm.shoulder.move(shoulder_angle, seconds=seconds, steps=steps)))
         if elbow_angle is not None:
-            tasks.append(Arm.elbow.move(elbow_angle, seconds=seconds, steps=steps))
+            tasks.append(uasyncio.create_task(Arm.elbow.move(elbow_angle, seconds=seconds, steps=steps)))
         if grip_angle is not None:
-            tasks.append(Arm.grip.move(grip_angle, seconds=seconds, steps=steps))
-        return uasyncio.gather(tasks)
+            tasks.append(uasyncio.create_task(Arm.grip.move(grip_angle, seconds=seconds, steps=steps)))
+        await uasyncio.gather(*tasks)
