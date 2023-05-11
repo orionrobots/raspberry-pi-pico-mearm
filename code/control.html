@@ -1,0 +1,26 @@
+<html>
+<head>
+    <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
+    <script>
+    $( document ).ready(() => {
+        $("#close").click(() => $.get("/close"));
+        $("#open").click(() => $.get("/open"));
+        let base_element=$('#base');
+        base_element.change(() => $.get('/set_base/' + base_element.prop('value') ));
+    });
+    </script>
+</head>
+<body>
+    <button id="close">Close</button>
+    <button id="open">Open</button>
+    <div class="slidecontainer">
+        <input type="range" min="20" max="180" value="90" class="slider" id="base">
+    </div>
+    <div class="slidecontainer">
+        <input type="range" min="20" max="180" value="90" class="slider" id="left">
+    </div>
+    <div class="slidecontainer">
+        <input type="range" min="20" max="180" value="90" class="slider" id="right">
+    </div>
+</body>
+</html>
