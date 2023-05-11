@@ -1,5 +1,6 @@
 <html>
 <head>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
     <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
     <script>
     $( document ).ready(() => {
@@ -13,18 +14,16 @@
         elbow_element.change(() => $.get('/set_elbow/' + elbow_element.prop('value') ));
     });
     </script>
+    <style>
+        html, body {margin: 0; height: 100%; overflow: hidden}
+        button { width: 100%; height: 40px; background: #d3d3d3; outline: none;}
+        .slider { -webkit-appearance: none; width: 100%; height: 40px; background: #dfdddd; }
+    </style>
 </head>
 <body>
-    <button id="close">Close</button>
-    <button id="open">Open</button>
-    <div class="slidecontainer">
-        <input type="range" min="20" max="180" value="90" class="slider" id="base">
-    </div>
-    <div class="slidecontainer">
-        <input type="range" min="20" max="180" value="90" class="slider" id="shoulder">
-    </div>
-    <div class="slidecontainer">
-        <input type="range" min="20" max="180" value="90" class="slider" id="elbow">
-    </div>
+    <button id="close">Close</button> <button id="open">Open</button>
+    <input type="range" min="0" max="180" value="90" class="slider" id="base">
+    <input type="range" min="0" max="180" value="90" class="slider" id="shoulder">
+    <input type="range" min="0" max="180" value="90" class="slider" id="elbow">
 </body>
 </html>
