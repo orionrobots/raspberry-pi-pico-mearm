@@ -1,9 +1,12 @@
+import machine
 from microdot_asyncio import Microdot
 from connect import wifi_connect
-from mearm import Arm
+from mearm import Arm, IKArm
 import uasyncio
 
 app = Microdot()
+arm = Arm()
+ik_arm = IKArm(arm)
 
 @app.route('/')
 async def index(request):
@@ -13,32 +16,32 @@ async def index(request):
 
 @app.route('/open')
 async def _open(request):
-    uasyncio.create_task(Arm.grip.move(Arm.grip.min_position))
+    uasyncio.create_task(arm.grip.move(arm.grip.min_position))
     return 'Opening'
     
 @app.route('/close')
 async def _close(request):
-    uasyncio.create_task(Arm.grip.move(Arm.grip.max_position))
+    uasyncio.create_task(arm.grip.move(arm.grip.max_position))
     return 'Closing'
 
 @app.route('/set_base/<int:position>')
 async def _set_base(request, position):
-    uasyncio.create_task(Arm.base.move(position))
+    uasyncio.create_task(arm.base.move(position))
     return 'Moving'
 
 @app.route('/set_shoulder/<int:position>')
 async def _set_shoulder(request, position):
-    uasyncio.create_task(Arm.shoulder.move(position))
+    uasyncio.create_task(arm.shoulder.move(position))
     return 'Moving'
 
 @app.route('/set_elbow/<int:position>')
 async def _set_elbow(request, position):
-    uasyncio.create_task(Arm.elbow.move(position))
+    uasyncio.create_task(arm.elbow.move(position))
     return 'Moving'
 
 @app.route('/move_to/<int:x>/<int:y>/<int:z>')
 async def _move_to(request, x, y, z):
-    uasyncio.create_task(Arm.move_to(x, y, z))
+    uasyncio.create_task(ik_arm.move_to(x, y, z))
     return 'Moving'
 
 try:
