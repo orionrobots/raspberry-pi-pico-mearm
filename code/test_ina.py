@@ -1,3 +1,4 @@
+# Derived from https://github.com/chrisb2/pyb_ina219/tree/master, adapted for Pico.
 from machine import Pin, I2C
 from ina219 import INA219
 i2c_bus = I2C(1, scl=Pin(27), sda=Pin(26))
