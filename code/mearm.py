@@ -19,6 +19,7 @@ PWM_MIN = 1000
 PWM_MAX = 9000
 PWM_RANGE = PWM_MAX - PWM_MIN
 PWM_FREQ = 50
+DEGREES_TO_PWM = PWM_RANGE / 180
 
 class Servo:
     def __init__(self, pin, reset_position=90, min_position=0, max_position=180):
@@ -29,7 +30,7 @@ class Servo:
         self.min_position = min_position
 
     def degrees_to_duty(self, angle):
-        return int(PWM_MIN + (angle * PWM_RANGE/180))
+        return int(PWM_MIN + (angle * DEGREES_TO_PWM))
 
     def set_angle(self, angle):
         self.pwm.duty_u16(self.degrees_to_duty(angle))
@@ -47,7 +48,14 @@ class Servo:
         self.move(self.reset_position, seconds=seconds, steps=steps)
 
 class Arm:
-    grip = Servo(4, reset_position=100, min_position=100, max_position=157)
-    elbow = Servo(5, min_position=30, max_position=120)
-    shoulder = Servo(6, min_position=50, max_position=150)
-    base = Servo(7, min_position=30, max_position=150)
+    def __init__(self, grip_pin=4, elbow_pin=5, shoulder_pin=6, base_pin=7):
+        self.grip = Servo(grip_pin, reset_position=100, min_position=100, max_position=157)
+        self.elbow = Servo(elbow_pin, min_position=0, max_position=150)
+        self.shoulder = Servo(shoulder_pin, min_position=0, max_position=145)
+        self.base = Servo(base_pin, min_position=30, max_position=150)
+
+    def reset(self):
+        self.grip.reset()
+        self.elbow.reset()
+        self.shoulder.reset()
+        self.base.reset()
