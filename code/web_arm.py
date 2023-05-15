@@ -1,9 +1,12 @@
+import machine
+import uasyncio
+
 from microdot_asyncio import Microdot
 from connect import wifi_connect
 from mearm import Arm
-import uasyncio
 
 app = Microdot()
+arm = Arm()
 
 @app.route('/')
 async def index(request):
@@ -11,29 +14,24 @@ async def index(request):
     with open("control.html") as content:
         return content.read(), 200, {'Content-Type': 'text/html'}
 
-@app.route('/open')
-async def _open(request):
-    uasyncio.create_task(Arm.grip.move(Arm.grip.min_position))
-    return 'Opening'
-    
-@app.route('/close')
-async def _close(request):
-    uasyncio.create_task(Arm.grip.move(Arm.grip.max_position))
-    return 'Closing'
+@app.route('/set_grip/<int:position>')
+async def _set_base(request, position):
+    uasyncio.create_task(arm.grip.move(position))
+    return 'Moving'
 
 @app.route('/set_base/<int:position>')
 async def _set_base(request, position):
-    uasyncio.create_task(Arm.base.move(position))
+    uasyncio.create_task(arm.base.move(position))
     return 'Moving'
 
 @app.route('/set_shoulder/<int:position>')
 async def _set_shoulder(request, position):
-    uasyncio.create_task(Arm.shoulder.move(position))
+    uasyncio.create_task(arm.shoulder.move(position))
     return 'Moving'
 
 @app.route('/set_elbow/<int:position>')
 async def _set_elbow(request, position):
-    uasyncio.create_task(Arm.elbow.move(position))
+    uasyncio.create_task(arm.elbow.move(position))
     return 'Moving'
 
 try:

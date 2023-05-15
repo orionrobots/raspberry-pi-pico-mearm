@@ -6,26 +6,30 @@
     <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
     <script>
     $( document ).ready(() => {
-        $("#close").click(() => $.get("/close"));
-        $("#open").click(() => $.get("/open"));
         let base_element=$('#base');
-        base_element.change(() => $.get('/set_base/' + base_element.prop('value') ));
+        base_element.on("change", () => $.get('/set_base/' + base_element.prop('value') ));
         let shoulder_element=$('#shoulder');
-        shoulder_element.change(() => $.get('/set_shoulder/' + shoulder_element.prop('value') ));
+        shoulder_element.on("change", () => $.get('/set_shoulder/' + shoulder_element.prop('value') ));
         let elbow_element=$('#elbow');
-        elbow_element.change(() => $.get('/set_elbow/' + elbow_element.prop('value') ));
+        elbow_element.on("change", () => $.get('/set_elbow/' + elbow_element.prop('value') ));
+        let grip_element=$('#grip');
+        elbow_element.on("change", () => $.get('/set_grip/' + grip_element.prop('value') ));
     });
     </script>
     <style>
-        html, body {margin: 0; height: 100%; overflow: hidden} /* disable scrolling */
-        button { width: 100%; height: 40px; background: #d3d3d3; outline: none;} /* make these big for phone and screen use */
-        .slider { -webkit-appearance: none; width: 100%; height: 40px; background: #dfdddd; }
+        html, body {margin: 4px; height: 100%; overflow: hidden} /* disable scrolling */
+        /* make these big for phone and screen use */
+        input[type=range] { -webkit-appearance: none; width: 75%; height: 40px; background: #dfdddd; }
+        label { display: inline-block; width: 20%; height: 40px}
     </style>
 </head>
 <body>
-    <button id="close">Close</button> <button id="open">Open</button>
-    <input type="range" min="0" max="180" value="90" class="slider" id="base">
-    <input type="range" min="0" max="180" value="90" class="slider" id="shoulder">
-    <input type="range" min="0" max="180" value="90" class="slider" id="elbow">
+    <h1>MeArm Control</h1>
+    <div>
+        <label for="base">Base</label><input type="range" min="0" max="180" value="90" id="base">
+    </div>
+    <div><label for="shoulder">Shoulder</label><input type="range" min="0" max="180" value="90" id="shoulder"></div>
+    <div><label for="elbow">Elbow</label><input type="range" min="0" max="180" value="90" id="elbow"></div>
+    <div><label for="grip">Grip</label><input type="range" min="0" max="180" value="90" id="grip"></div>
 </body>
 </html>
