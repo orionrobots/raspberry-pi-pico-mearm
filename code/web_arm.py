@@ -1,12 +1,15 @@
 import machine
+import uasyncio
+
 from microdot_asyncio import Microdot
 from connect import wifi_connect
 from mearm import Arm, IKArm
-import uasyncio
+from smart_grippers import SmartGrippers
 
 app = Microdot()
 arm = Arm()
 ik_arm = IKArm(arm)
+grippers = SmartGrippers(arm)
 
 @app.route('/')
 async def index(request):
@@ -16,12 +19,12 @@ async def index(request):
 
 @app.route('/open')
 async def _open(request):
-    uasyncio.create_task(arm.grip.move(arm.grip.min_position))
+    uasyncio.create_task(grippers.open_grippers())
     return 'Opening'
     
 @app.route('/close')
 async def _close(request):
-    uasyncio.create_task(arm.grip.move(arm.grip.max_position))
+    uasyncio.create_task(grippers.close_grippers())
     return 'Closing'
 
 @app.route('/set_base/<int:position>')
