@@ -18,10 +18,10 @@
             let raw_x = position.css('left').replace('px', '');
             let raw_y = position.css('top').replace('px', '');
             let z = z_element.prop('value');
-            let xscale = 160 / xy_plane.width();
-            let yscale = 160 / xy_plane.height();
-            let x = int(raw_x * xscale);
-            let y = int(raw_y * yscale);
+            let xscale = 130 / xy_plane.width();
+            let yscale = 130 / xy_plane.height();
+            let x = Math.round(raw_x * xscale) + 80;
+            let y = Math.round(raw_y * yscale) + 80;
             $.get('/move_to/' + x + '/' + y + '/' + z);
         }
 
@@ -65,7 +65,7 @@
     <div id="xy_plane">
         <div id="position"></div>
     </div>
-    <input type="range" orient="vertical" min="0" max="180" value="90" class="slider" id="z">
+    <input type="range" orient="vertical" min="-20" max="140" value="80" class="slider" id="z">
     <button id="close">Close</button> <button id="open">Open</button>
 </body>
 </html>

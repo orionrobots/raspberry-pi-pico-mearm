@@ -1,8 +1,9 @@
 import machine
+import uasyncio
+
 from microdot_asyncio import Microdot
 from connect import wifi_connect
 from mearm import Arm, IKArm
-import uasyncio
 
 app = Microdot()
 arm = Arm()

@@ -109,7 +109,7 @@ class IKArm:
         step_time = seconds/steps
         for n in range(steps):
             base_angle, shoulder_angle, elbow_angle = self.calculate_angles(self.current_x, self.current_y, self.current_z)
-            await Arm.move_together(base_angle=base_angle, shoulder_angle=shoulder_angle, elbow_angle=elbow_angle, seconds=step_time, steps=1)
+            await self.arm.move_together(base_angle=base_angle, shoulder_angle=shoulder_angle, elbow_angle=elbow_angle, seconds=step_time, steps=1)
             self.current_x += x_step
             self.current_y += y_step
             self.current_z += z_step
@@ -117,4 +117,4 @@ class IKArm:
     async def reset(self, seconds=1, steps=100):
         self.move_to(80, 0, 80)
 
-arm = IKArm(Arm)
+arm = IKArm(Arm())
