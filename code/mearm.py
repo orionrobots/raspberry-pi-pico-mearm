@@ -48,7 +48,7 @@ class Servo:
         self.move(self.reset_position, seconds=seconds, steps=steps)
 
 class Arm:
-    def __init__(self, grip_pin=4, elbow_pin=5, shoulder_pin=6, base_pin=7):
+    def __init__(self, elbow_pin=4, grip_pin=5, shoulder_pin=6, base_pin=7):
         self.grip = Servo(grip_pin, reset_position=100, min_position=100, max_position=157)
         self.elbow = Servo(elbow_pin, min_position=0, max_position=150)
         self.shoulder = Servo(shoulder_pin, min_position=0, max_position=145)
