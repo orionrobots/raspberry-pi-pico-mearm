@@ -42,16 +42,15 @@ class Arm:
         self.base = Servo(base_pin)
 
     async def move_together(self, base=None, shoulder=None, elbow=None, grip=None, seconds=1, steps=100):
-        tasks = []
         if base is not None:
-            tasks.append(uasyncio.create_task(self.base.move(base, seconds=seconds, steps=steps)))
+            uasyncio.create_task(self.base.move(base, seconds=seconds, steps=steps))
         if shoulder is not None:
-            tasks.append(uasyncio.create_task(self.shoulder.move(shoulder, seconds=seconds, steps=steps)))
+            uasyncio.create_task(self.shoulder.move(shoulder, seconds=seconds, steps=steps))
         if elbow is not None:
-            tasks.append(uasyncio.create_task(self.elbow.move(elbow, seconds=seconds, steps=steps)))
+            uasyncio.create_task(self.elbow.move(elbow, seconds=seconds, steps=steps))
         if grip is not None:
-            tasks.append(uasyncio.create_task(self.grip.move(grip, seconds=seconds, steps=steps)))
-        await uasyncio.gather(*tasks)
+            uasyncio.create_task(self.grip.move(grip, seconds=seconds, steps=steps))
+        await uasyncio.sleep(seconds)
 
 
 arm = Arm()
