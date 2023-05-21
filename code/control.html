@@ -25,9 +25,13 @@
 </head>
 <body>
     <h1>MeArm Control</h1>
-    <div><label for="base">Base</label><input type="range" min="0" max="180" value="90" id="base"></div>
-    <div><label for="shoulder">Shoulder</label><input type="range" min="0" max="180" value="90" id="shoulder"></div>
-    <div><label for="elbow">Elbow</label><input type="range" min="0" max="180" value="90" id="elbow"></div>
-    <div><label for="grip">Grip</label><input type="range" min="0" max="180" value="90" id="grip"></div>
+
+    <datalist id="snap_to_zero">
+        <option value="0">
+    </datalist>
+    <div><label for="base">Base</label><input type="range" min="-90" max="90" value="0" id="base" list="snap_to_zero"></div>
+    <div><label for="shoulder">Shoulder</label><input type="range" min="-90" max="90" value="0" id="shoulder" list="snap_to_zero"></div>
+    <div><label for="elbow">Elbow</label><input type="range" min="-90" max="90" value="0" id="elbow" list="snap_to_zero"></div>
+    <div><label for="grip">Grip</label><input type="range" min="-90" max="90" value="0" id="grip" list="snap_to_zero"></div>
 </body>
 </html>

@@ -4,26 +4,26 @@ del sys.modules["mearm"]
 from mearm import arm, do
 # tests
 
-do(arm.move_together(base=120, shoulder=120, elbow=120, grip=120))
-do(arm.move_together(shoulder=90, elbow=130))
+do(arm.move_together(base=30, shoulder=40, elbow=30, grip=20))
+do(arm.move_together(shoulder=0, elbow=-30))
 """
 import machine
 import uasyncio
 
-PWM_MIN = 1000
-PWM_MAX = 9000
-PWM_RANGE = PWM_MAX - PWM_MIN
+
+PWM_MID = 5000
 PWM_FREQ = 50
-DEGREES_TO_PWM = PWM_RANGE / 180
+DEGREES_TO_PWM = 4000 / 90
+
 
 class AsyncServo:
     def __init__(self, pin):
         self.pwm = machine.PWM(machine.Pin(pin, machine.Pin.OUT))
         self.pwm.freq(PWM_FREQ)
-        self.current = 90
+        self.current = 0
 
     def set_angle(self, angle):
-        self.pwm.duty_u16(int(PWM_MIN + (angle * DEGREES_TO_PWM)))
+        self.pwm.duty_u16(int(PWM_MID + (angle * DEGREES_TO_PWM)))
 
     async def move(self, position, seconds=1, steps=100):
         step_time = seconds/steps
@@ -32,9 +32,6 @@ class AsyncServo:
             await uasyncio.sleep(step_time)
             self.set_angle(self.current)
             self.current += step_size
-
-    async def reset(self):
-        await self.move(90)
 
 
 class Arm:
