@@ -16,7 +16,7 @@ PWM_FREQ = 50
 DEGREES_TO_PWM = 4000 / 90
 
 
-class AsyncServo:
+class Servo:
     def __init__(self, pin):
         self.pwm = machine.PWM(machine.Pin(pin, machine.Pin.OUT))
         self.pwm.freq(PWM_FREQ)
@@ -36,10 +36,10 @@ class AsyncServo:
 
 class Arm:
     def __init__(self, elbow_pin=4, grip_pin=5, shoulder_pin=6, base_pin=7):
-        self.grip = AsyncServo(grip_pin)
-        self.elbow = AsyncServo(elbow_pin)
-        self.shoulder = AsyncServo(shoulder_pin)
-        self.base = AsyncServo(base_pin)
+        self.grip = Servo(grip_pin)
+        self.elbow = Servo(elbow_pin)
+        self.shoulder = Servo(shoulder_pin)
+        self.base = Servo(base_pin)
 
     async def move_together(self, base=None, shoulder=None, elbow=None, grip=None, seconds=1, steps=100):
         tasks = []
