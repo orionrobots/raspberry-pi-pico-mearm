@@ -12,4 +12,3 @@ servo.duty_u16(5000)
 servo = machine.PWM(machine.Pin(7, machine.Pin.OUT))
 servo.freq(50)
 servo.duty_u16(5000)
-
