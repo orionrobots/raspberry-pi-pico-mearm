@@ -5,7 +5,7 @@ from mearm import arm, do
 # tests
 
 do(arm.move_together(base=120, shoulder=120, elbow=120, grip=120))
-do(arm.reset())
+do(arm.move_together(shoulder=90, elbow=130))
 """
 import machine
 import uasyncio
