@@ -13,13 +13,12 @@
         let elbow_element=$('#elbow');
         elbow_element.on("change", () => $.get('/set_elbow/' + elbow_element.prop('value') ));
         let grip_element=$('#grip');
-        elbow_element.on("change", () => $.get('/set_grip/' + grip_element.prop('value') ));
+        grip_element.on("change", () => $.get('/set_grip/' + grip_element.prop('value') ));
     });
     </script>
     <style>
         html, body {margin: 4px; height: 100%; overflow: hidden} /* disable scrolling */
-        /* make these big for phone and screen use */
-        input[type=range] { -webkit-appearance: none; width: 75%; height: 40px; background: #dfdddd; }
+        input[type=range] { width: 75%; height: 40px; background: #dfdddd; }
         label { display: inline-block; width: 20%; height: 40px}
     </style>
 </head>

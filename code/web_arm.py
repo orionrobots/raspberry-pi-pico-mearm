@@ -24,28 +24,27 @@ arm = Arm()
 
 @app.route('/')
 async def index(request):
-    print("Handling /")
     with open("control.html") as content:
         return content.read(), 200, {'Content-Type': 'text/html'}
 
-@app.route('/set_grip/<int:position>')
-async def _set_base(request, position):
-    uasyncio.create_task(arm.grip.move(position))
+@app.route('/set_grip/<position>')
+async def set_base(request, position):
+    uasyncio.create_task(arm.grip.move(int(position)))
     return 'Moving'
 
-@app.route('/set_base/<int:position>')
-async def _set_base(request, position):
-    uasyncio.create_task(arm.base.move(position))
+@app.route('/set_base/<position>')
+async def set_base(request, position):
+    uasyncio.create_task(arm.base.move(int(position)))
     return 'Moving'
 
-@app.route('/set_shoulder/<int:position>')
-async def _set_shoulder(request, position):
-    uasyncio.create_task(arm.shoulder.move(position))
+@app.route('/set_shoulder/<position>')
+async def set_shoulder(request, position):
+    uasyncio.create_task(arm.shoulder.move(int(position)))
     return 'Moving'
 
-@app.route('/set_elbow/<int:position>')
-async def _set_elbow(request, position):
-    uasyncio.create_task(arm.elbow.move(position))
+@app.route('/set_elbow/<position>')
+async def set_elbow(request, position):
+    uasyncio.create_task(arm.elbow.move(int(position)))
     return 'Moving'
 
 try:
