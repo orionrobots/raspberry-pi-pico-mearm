@@ -1,5 +1,6 @@
 import machine
 import uasyncio
+import json
 
 from microdot_asyncio import Microdot
 from connect import wifi_connect
@@ -21,6 +22,7 @@ def wifi_connect():
 
 app = Microdot()
 arm = Arm()
+step_list = []
 
 @app.route('/')
 async def index(request):
@@ -46,6 +48,43 @@ async def set_shoulder(request, position):
 async def set_elbow(request, position):
     uasyncio.create_task(arm.elbow.move(int(position)))
     return 'Moving'
+
+@app.route('/add_step')
+async def add_step(request):
+    state = (arm.base.current, arm.shoulder.current, arm.elbow.current, arm.grip.current)
+    step_list.append(state)
+    return 'Added step'
+
+async def run_steps():
+    try:
+        for step in step_list:
+            await arm.move_together(*step, seconds=1)
+    except:
+        print("Steps were:", step_list)
+        raise
+
+@app.route('/run_steps')
+async def handle_run_steps(request):
+    uasyncio.create_task(run_steps())
+    return 'Running steps'
+
+@app.route('/save_steps')
+async def handle_save_steps(request):
+    with open("steps.json", "w") as f:
+        json.dump(step_list, f)
+    return 'Saved steps'
+
+@app.route('/clear_steps')
+async def handle_clear_steps(request):
+    step_list.clear()
+    return 'Cleared steps'
+
+@app.route('/load_steps')
+async def handle_load_steps(request):
+    global step_list
+    with open("steps.json") as f:
+        step_list = json.load(f)
+    return 'Loaded steps'
 
 try:
     wifi_connect()

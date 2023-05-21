@@ -32,5 +32,10 @@
     <div><label for="shoulder">Shoulder</label><input type="range" min="-90" max="90" value="0" id="shoulder" list="snap_to_zero"></div>
     <div><label for="elbow">Elbow</label><input type="range" min="-90" max="90" value="0" id="elbow" list="snap_to_zero"></div>
     <div><label for="grip">Grip</label><input type="range" min="-90" max="90" value="0" id="grip" list="snap_to_zero"></div>
+    <button onclick="$.get('/add_step')">Add Step</button>
+    <button onclick="$.get('/run_steps')">Run Steps</button>
+    <button onclick="$.get('/clear_steps')">Clear Steps</button>
+    <button onclick="$.get('/save_steps')">Save Steps</button>
+    <button onclick="$.get('/load_steps')">Load Steps</button>
 </body>
 </html>
