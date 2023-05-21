@@ -44,6 +44,7 @@ class AsyncServo:
     async def reset(self, seconds=1, steps=100):
         await self.move(self.reset_position, seconds=seconds, steps=steps)
 
+
 class Arm:
     def __init__(self, elbow_pin=4, grip_pin=5, shoulder_pin=6, base_pint=7):
         self.grip = AsyncServo(grip_pin, reset_position=100, min_position=100, max_position=157)
@@ -62,9 +63,6 @@ class Arm:
         if grip is not None:
             tasks.append(uasyncio.create_task(self.grip.move(grip, seconds=seconds, steps=steps)))
         await uasyncio.gather(*tasks)
-
-    async def reset(self, seconds=1, steps=100):
-        await self.move_together(base=90, shoulder=90, elbow=90, grip=100, seconds=seconds, steps=steps)
 
 
 arm = Arm()
