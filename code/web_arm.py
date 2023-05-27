@@ -3,7 +3,6 @@ import uasyncio
 import json
 
 from microdot_asyncio import Microdot
-from connect import wifi_connect
 from mearm import Arm
 
 import network
