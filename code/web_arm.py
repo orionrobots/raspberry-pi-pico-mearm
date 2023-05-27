@@ -3,7 +3,7 @@ import uasyncio
 import json
 
 from microdot_asyncio import Microdot
-from mearm import Arm
+from mearm import arm
 
 import network
 from utime import sleep
@@ -20,7 +20,6 @@ def wifi_connect():
     print(wlan.ifconfig())
 
 app = Microdot()
-arm = Arm()
 step_list = []
 
 @app.route('/')
